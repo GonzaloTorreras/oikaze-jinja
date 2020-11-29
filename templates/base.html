@@ -3,36 +3,31 @@
     Global vars
 
 #################}
-
 {# TODO: Its likely to be moved all those vars to theme var -> config.py #}
+{%- set is_verbose = true -%} {# Used to get a verbose HTML with extra comments. Recomended to disable on LIVE #}
+{# Used to split the title between the current page title and the site_title #}
+{%- set title_separator = " | " -%}
 
-    {% set is_verbose = true %} {# Used to get a verbose HTML with extra comments. Recomended to disable on LIVE #}
-
-    {# Used to split the title between the current page title and the site_title #}
-    {% set title_separator = " | " %}
-
-    {#
-        head_assets check in _helpers/base.jinja for full structure.
-    #}
-    {#
-    {% set head_assets = {
-        "css": [
-            '<link href="/assets/css/main.css?" rel="preload" as="style" type="text/css" onload="this.rel=\'stylesheet\'" />',
-        ],
-        "js": []    
-    } %}
-    #}
-    {% set is_boxed = True %}
-    {# 
-        When true, will use the lang codes instead the full language name for the lang switcher.
-    #}
-    {% set translation_menu_lang_code = true %}
-    
-    {# Init vars if weren't declared prior the extends() #}
-    {% if not body_class %}
-        {% set body_class = "" %}
-    {% endif %}
-
+{#
+    head_assets check in _helpers/base.jinja for full structure.
+#}
+{#
+{%- set head_assets = {
+    "css": [
+        '<link href="/assets/css/main.css?" rel="preload" as="style" type="text/css" onload="this.rel=\'stylesheet\'" />',
+    ],
+    "js": []    
+} -%}
+#}
+{%- set is_boxed = True -%}
+{# 
+    When true, will use the lang codes instead the full language name for the lang switcher.
+#}
+{%- set translation_menu_lang_code = true -%}
+{# Init vars if weren't declared prior the extends() #}
+{%- if not body_class -%}
+    {%- set body_class = "" -%}
+{%- endif -%}
 {#
     Load the macros AFTER setting up the variables
 #}
@@ -41,9 +36,8 @@
     macros that will overwrite just "same name" macros.
 #}
 {#% include "_helpers/custom.jinja" ignore missing with context as custom %#}
-{% import "_helpers/base.jinja" as macros with context %}
-{% import "_helpers/ui.jinja" as ui with context %}
-
+{%- import "_helpers/base.jinja" as macros with context -%}
+{%- import "_helpers/ui.jinja" as ui with context -%}
 <!DOCTYPE html>
 <html class="no-js" {{ 'dir="rtl"' if globals.is_rtl }} lang="{{ content.lang }}">
 <head>
@@ -54,7 +48,7 @@
 
         {# All SEO related inside #}
 
-        {% block seo %}
+        {%- block seo -%}
             {{- '<title>%s</title>'|format(content.title|e ~ title_separator ~ globals.site_title|e if content.title != globals.site_title else globals.site_title|e ) -}}
             {{- '<meta name="description" content="%s">'|format(content.description|e) if content.description -}}
             {{- macros.verbose('Debug: NO DESCRIPTION!') if not content.description -}}
@@ -67,13 +61,13 @@
             <!-- TODO: Double check author (blog_author?) -->
             {{- '<meta name="author" content="%s">'|format(content.author|e) if content.author -}}
 
-            {% if content.prevlink %}
+            {%- if content.prevlink -%}
                 <link rel="prev" href="{{ content.prevlink|e }}" type="text/html">
-            {% endif %}
-            {% if nextlink %}
+            {%- endif -%}
+            {%- if nextlink -%}
                 <link rel="next" href="{{ content.nextlink|e }}" type="text/html">
-            {% endif %}
-        {% endblock seo %}
+            {%- endif -%}
+        {%- endblock seo -%}
 
         {# END SEO RELATED #}
 
@@ -81,27 +75,27 @@
         {#
         {{ macros.head_includes() }}
         #}
-        {% block head_include %}
+        {%- block head_include -%}
             <link href="/assets/css/main.css?" rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" />
 
-        {% endblock %}
+        {%- endblock -%}
 
         <!-- TODO: FavIcon -->
          <meta name="theme-color" content="{{ theme_color }}">
-        {% if favicons %}
-            {% for name, file, size in favicons %}
+        {%- if favicons -%}
+            {%- for name, file, size in favicons -%}
                 <link rel="{{ name }}" href="{{ file }}" sizes="{{ size }}"/>
-            {% endfor %}
-        {% endif %}
+            {%- endfor -%}
+        {%- endif -%}
 
         {#{ feeds_translations.head(classification=None, kind='index', other=False) }#}
         
 
 
 
-        {#% if comment_system == 'facebook' %}
+        {#% if comment_system == 'facebook' -%}
             <meta property="fb:app_id" content="{{ comment_system_id }}">
-        {% endif %#}
+        {%- endif %#}
 
 
 
@@ -109,23 +103,23 @@
         {{ macros.verbose("extra_head")}}
         {{ extra_head_data }}
         
-        {% block extra_head %}
+        {%- block extra_head -%}
         {#  Leave this block alone. #}
-        {% endblock %}
+        {%- endblock -%}
         {#{ template_hooks['extra_head']() }#}
 </head>
 <body {{ 'class="%s"'|format(body_class) if body_class }}>
-{% block body %}
+{%- block body -%}
     <div class="site-box {{ 'is_boxed' if is_boxed }}">
         <a href="#content" hidden class="">{#{ messages("Skip to main content") }#}</a>
 
-        {% include "_partials/header.html" %}
+        {%- include "_partials/header.html" -%}
 
-        {% block container_wrapper %}
+        {%- block container_wrapper -%}
             <main id="site-content">
-                {% block content %}
+                {%- block content -%}
                     <h1>Hello world! - {{ blog_title }}</h1>
-                {% endblock %}
+                {%- endblock -%}
             </main>
         {%- endblock container_wrapper -%}
 
@@ -135,12 +129,12 @@
 
     {#{ base.late_load_js() }#}
 
-    {% block footer_include %}
+    {%- block footer_include -%}
         <script defer src="/assets/js/main.js"></script>
-    {% endblock %}
+    {%- endblock -%}
     {#{- template_hooks['body_end']() -}#}
 {%- endblock body -%}
-{% set debug = "%sTemplate in use: %s\n"|format(debug, template_name) if is_verbose %}
+{%- set debug = "%sTemplate in use: %s\n"|format(debug, template_name) if is_verbose -%}
 {{- "<pre id='is_verbose'> %s </pre>"|format(debug|e) if is_verbose -}}
 </body>
 </html>

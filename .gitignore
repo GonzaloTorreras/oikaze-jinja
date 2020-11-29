@@ -132,4 +132,4 @@ dmypy.json
 .vscode/
 
 # Ignore default /output folder for content generated
- output/
+output/

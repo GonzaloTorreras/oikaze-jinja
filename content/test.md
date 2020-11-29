@@ -1,7 +1,7 @@
 title: Page title
 description: Description
 slug: /
-lang: es
+lang: en
 date: 04/10
 
 # EN - Page title

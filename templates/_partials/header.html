@@ -1,0 +1,20 @@
+
+{% block header %}
+    <header id="site-header">
+        <nav class="container header-menu menu-horizontal flex-jspace_between">
+            {% set logo = ('<img class="site-logo" src="%s" alt="%s">'|format( logo_url, blog_title) ) if logo_url else blog_title  %}
+            {{ '<a class="logo" href="/">%s</a>'|format(logo) }}
+
+            {#{ ui.menu(navigation_links[lang], "main-menu") }#}
+            {#{ ui.legacy_menu_generator(navigation_links[lang]) }#}
+            
+            {#% if search_form % TODO: Theme option for search form in Header. #}
+                {{ ui.searchForm() }}
+            {#% endif %#}
+
+
+            {{ ui.langSwitcher() }}
+        </nav>
+    </header>
+{% endblock header %}
+

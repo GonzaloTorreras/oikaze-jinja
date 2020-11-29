@@ -1,4 +1,4 @@
-title: Titulo
+title: Título de la página
 description: Descripción
 slug: /
 lang: es

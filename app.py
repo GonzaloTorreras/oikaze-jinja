@@ -5,8 +5,10 @@ from shutil import rmtree
 
 from jinja2 import Environment, PackageLoader
 
-app_options ={
-    "clean_output": True
+
+app_options = {
+    "clean_output": True,
+    "output_folder": "output"
 }
 global_options = {
     "lang": "en",
@@ -33,6 +35,20 @@ def getListOfFiles(dirName):
 
     return allFiles
 
+def outputF(file,data):
+    if(data["slug"] != "/" and data["slug"] != "index" and data["slug"] != "home"):
+        slug = data["slug"]
+    else:
+        slug = ""
+
+    if slug:
+        outputFile = path.join( getcwd(), app_options["output_folder"], slug )
+    else:
+        outputFile = app_options["output_folder"]
+    
+    return outputFile
+
+
 def parseContent():
     counter = 0
     for filename in getListOfFiles("content"):
@@ -45,12 +61,7 @@ def parseContent():
         html = buildContent(data)
 
         #print(data)
-        if(data["slug"] != "/" and data["slug"] != "index" and data["slug"] != "home"):
-            slug = data["slug"]
-        else:
-            slug = ""
-        
-        outputFile = path.join(getcwd(),"output", slug )
+        outputFile = outputF(file,data)
         
         
         
@@ -62,6 +73,7 @@ def parseContent():
                   outputFile + "/index.html")
         
         counter += 1
+
 
 
 def buildContent(data,template="base.html"):
@@ -85,12 +97,17 @@ def generateOutput(html,file):
     return True
 
 
+
+###############
+#     RUN     #
+###############
 if app_options["clean_output"]:
     try:
-        rmtree(path.join(getcwd(), 'output') )
+        rmtree(path.join(getcwd(), app_options["output_folder"]))
         print("Output folder cleaned")
     except:
         # TODO: false positive error?
-        print("Error cleaning up output folder:" + getcwd() + '/output' )
+        print("Error cleaning up output folder:" +
+              getcwd() + app_options["output_folder"] )
 
 parseContent( )

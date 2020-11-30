@@ -95,11 +95,14 @@ def outputF(filePath, data):
     return outputFile
 
 
-def parseFile(file):
-    with open(path.join(file), 'r') as file:
+def parseFile(fileName):
+    with open(path.join(fileName), 'r') as file:
         parsed_md = markdown(file.read(), extras=['metadata'])
     data = parsed_md.metadata
     data["body"] = parsed_md
+
+    if "blog/" in fileName:
+        data["template"] = "blog-post.html"
 
     return data
 

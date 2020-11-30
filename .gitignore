@@ -1,3 +1,7 @@
+#######
+# Python related
+#######
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,5 +135,22 @@ dmypy.json
 # VSC
 .vscode/
 
+#####
+# Node related 
+#####
+# dotenv environment variables file
+.env
+.env.test
+# cached files
+.cache/
+# Optional npm cache directory
+.npm
+# Dependency directories
+node_modules/
+jspm_packages/
+
+#####
+# APP related
+#####
 # Ignore default /output folder for content generated
 output/

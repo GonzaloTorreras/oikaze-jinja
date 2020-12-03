@@ -24,9 +24,14 @@
     When true, will use the lang codes instead the full language name for the lang switcher.
 #}
 {%- set translation_menu_lang_code = true -%}
+{# Add "base" body class to extend later #}
+{% set body_class_base = "bg-gray-200 font-sans leading-normal tracking-normal" %}
+
 {# Init vars if weren't declared prior the extends() #}
 {%- if not body_class -%}
-    {%- set body_class = "" -%}
+    {%- set body_class = body_class_base -%}
+{%- else -%}
+    {%- set body_class = body_class ~ " " ~ body_class_base -%}
 {%- endif -%}
 {#
     Load the macros AFTER setting up the variables

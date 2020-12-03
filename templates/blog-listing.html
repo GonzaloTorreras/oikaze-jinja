@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="grid gap-10 md:grid-cols-3">
+{% for post in posts %}
     <div class="flex flex-col m-4 overflow-hidden rounded shadow-md hover:shadow-lg"> <!--  Card -->
         <img class="object-cover w-full h-56 sm:h-48" src="https://images.unsplash.com/photo-1519139270028-ab664cf42264?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=750&amp;q=80" alt="..." style="clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 80%);">
 
@@ -23,9 +24,10 @@
             </div>
 
             <div class="px-4">
-                <span class="font-sans text-xs font-medium text-gray-700 uppercase md:text-sm">culture</span>
+                <a class="font-sans text-xs font-medium text-gray-700 uppercase md:text-sm">culture</a>
             </div>
         </div>
-    </div> <!-- end card    -->
+    </div> <!-- #END card    -->
+    {% endfor %}
 </div>
 {% endblock %}

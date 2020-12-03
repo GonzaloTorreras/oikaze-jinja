@@ -6,5 +6,6 @@ site_options = {
     },
     "is_rtl": False,
     "title": "My Site",
-    "description": "My static site"
+    "description": "My static site",
+    "blog_index": "blog"
 }

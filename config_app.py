@@ -9,6 +9,7 @@ app_options = {
     "clean_output": True,
     "output_folder": "output",
     "content_folder": "content",
+    "assets_folder": "templates/assets",
     "jinja2_conf": {}
 
 }

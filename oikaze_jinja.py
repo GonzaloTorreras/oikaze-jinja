@@ -1,7 +1,7 @@
 from markdown2 import markdown
 from os import listdir, path, getcwd
 from pathlib import Path
-from shutil import rmtree
+from shutil import rmtree, copytree
 #import configparser # TODO: the whole config parser
 
 from jinja2 import Environment, PackageLoader
@@ -101,36 +101,41 @@ def parseFile(fileName):
     data = parsed_md.metadata
     data["body"] = parsed_md
 
-    if "blog/" in fileName:
+    # default template to post
+    if not "template" in data:
         data["template"] = "blog-post.html"
 
     return data
 
 
-def parseContentFolder():
+def parseContentFolder(allFiles):
     global app_options
 
     counter = 0
     env = loadJinjaEnv()
 
-    for fileName in getListOfFiles(app_options["content_folder"]):
+    for fileName in allFiles:
         counter += 1
         data = parseFile(fileName)
         html = buildContent(env, data)
 
-        #print(data)
-        outputFile = outputF(fileName, data)
+        if html:
+            #print(data)
+            outputFile = outputF(fileName, data)
 
-        if outputFile:
+            if outputFile:
 
-            if generateOutput(html, outputFile):
-                print(str(counter) + " " + fileName +
-                      " processed to -> " + outputFile + "/index.html")
+                if generateOutput(html, outputFile):
+                    print(str(counter) + " " + fileName +
+                        " processed to -> " + outputFile + "/index.html")
+                else:
+                    print(str(counter) + " " + "ERROR generating" +
+                        outputFile + "/index.html")
             else:
-                print(str(counter) + " " + "ERROR generating" +
-                      outputFile + "/index.html")
-        else:
-            print("Error getting output folder for %s", fileName)
+                print("Error getting output folder for %s", fileName)
+        
+            
+    # Generate listing pages
 
 
 def loadJinjaEnv():
@@ -158,12 +163,40 @@ def buildContent(env, data):
         template = data["template"]
     else:
         template = "base.html"  # TODO: add app setting to change name of default template name?
-    render = env.get_template(template)
 
-    return render.render(content=data, globals=site_options)
+    try:
+        render = env.get_template(template)
+    except:
+        print("Error, can't find the template: templates/" + template)
+        return False
+        
+    try:
+        r = render.render(content=data, globals=site_options)
+    except:
+        print("Error rendering")
+        print(render)
+        return False
+    return r
+
+def copyAssets(customFolder = False):
+    if customFolder:
+        orig = customFolder
+    else:
+        orig = app_options["assets_folder"]
+    
+    end = app_options["output_folder"] + "/" + orig.split("/")[-1]
+    try:
+        copytree(orig, end)
+    except:
+        print("Error copying the assets/static folder: " + orig + " -> " + end)
+
+    print("Assets cloned")
+
 
 
 def generateOutput(html, file):
+    if str(file).startswith("/"):
+        file = file[1:]
     #create folder(s) if doesn't exists
     try:
         Path(file).mkdir(parents=True, exist_ok=True)
@@ -189,4 +222,8 @@ if app_options["clean_output"]:
         print("Error cleaning up output folder:" +
               getcwd() + app_options["output_folder"] )
 
-parseContentFolder()
+
+allFiles = getListOfFiles(app_options["content_folder"])
+parseContentFolder(allFiles)
+copyAssets()
+print(str(allFiles))

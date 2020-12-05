@@ -1,0 +1,26 @@
+{
+  "name": "oikaze-jinja",
+  "version": "0.0.1",
+  "description": "Static Site generator using Jinja2 & TailwindCSS",
+  "main": "postcss.config.js",
+  "dependencies": {
+    "autoprefixer": "^10.0.4"
+  },
+  "devDependencies": {
+    "postcss": "^8.1.14",
+    "postcss-cli": "^8.3.0"
+  },
+  "scripts": {
+    "build": "postcss templates/assets/css/style.css -o output/assets/css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GonzaloTorreras/oikaze-jinja.git"
+  },
+  "author": "Gonzalo Torreras",
+  "license": "GNU GPLv3",
+  "bugs": {
+    "url": "https://github.com/GonzaloTorreras/oikaze-jinja/issues"
+  },
+  "homepage": "https://github.com/GonzaloTorreras/oikaze-jinja#readme"
+}

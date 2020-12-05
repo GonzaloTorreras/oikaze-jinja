@@ -31,10 +31,9 @@ class OikazeJinja(object):
 
 
     def getListOfFiles(self, dirName = False):
-        print(self.app_options["content_folder"])
 
         if not dirName:
-            dirName = self.app_options["content_folder"]
+            dirName = self.app_options['content_folder']
 
         # create a list of file and sub directories
         # names in the given directory
@@ -74,8 +73,8 @@ class OikazeJinja(object):
         global app_options
         global site_options
 
-        if(data["slug"] != "/" and data["slug"] != "index" and data["slug"] != "home"):
-            slug = data["slug"]
+        if(data['slug'] != "/" and data['slug'] != "index" and data['slug'] != "home"):
+            slug = data['slug']
         else:
             slug = ""
 
@@ -84,14 +83,14 @@ class OikazeJinja(object):
 
         filePath = self.splitAll(filePath)
         #replace first folder (content/ by default) for output folder (output/ by default)
-        filePath[0] = app_options["output_folder"]
+        filePath[0] = app_options['output_folder']
 
         # Add lang slug if needed
         if "lang_slugs" in site_options:
-            if data["lang"] in site_options["lang_slugs"]:
-                filePath.insert(1, site_options["lang_slugs"][data["lang"]])
+            if data['lang'] in site_options['lang_slugs']:
+                filePath.insert(1, site_options['lang_slugs'][data['lang']])
             else:
-                print("site_options[lang_slug] is missing lang: " + data["lang"])
+                print("site_options[lang_slug] is missing lang: " + data['lang'])
                 return False
         else:
             print("site_options is missing [lang_slug] key")
@@ -112,11 +111,11 @@ class OikazeJinja(object):
         with open(path.join(fileName), 'r') as file:
             parsed_md = markdown(file.read(), extras=['metadata'])
         data = parsed_md.metadata
-        data["body"] = parsed_md
+        data['body'] = parsed_md
 
         # default template to post
         if not "template" in data:
-            data["template"] = "blog-post.html"
+            data['template'] = self.app_options['template_default']
 
         return data
 
@@ -153,7 +152,7 @@ class OikazeJinja(object):
     def loadJinjaEnv(self):
 
         env = Environment(
-            loader=PackageLoader('oikaze_jinja', 'templates'),
+            loader=PackageLoader('oikaze_jinja', self.app_options['template_folder']),
             autoescape=select_autoescape(['html', 'xml']),
             auto_reload=False
         )
@@ -163,7 +162,7 @@ class OikazeJinja(object):
 
         # TODO: Test in depth if this parser of jinja2 extra config works
         if "jinja2_env" in app_options:
-            for k, v in self.app_options["jinja2_env"]:
+            for k, v in self.app_options['jinja2_env']:
                 env[k] = v
 
         return env
@@ -172,7 +171,7 @@ class OikazeJinja(object):
     def buildContent(self, data):
 
         if "template" in data:
-            template = data["template"]
+            template = data['template']
         else:
             template = "base.html"  # TODO: add app setting to change name of default template name?
 
@@ -192,21 +191,21 @@ class OikazeJinja(object):
 
 
     def clearOutputFolder(self):
-        if self.app_options["clean_output"]:
+        if self.app_options['clean_output']:
 
-            output_folder = self.app_options["output_folder"]
+            output_folder = self.app_options['output_folder']
             
-            if self.app_options["output_folder"][1] != "/":
+            if self.app_options['output_folder'][1] != "/":
                 output_folder = "/" + output_folder
 
             try:
-                rmtree(path.join(getcwd(), self.app_options["output_folder"]))
+                rmtree(path.join(getcwd(), self.app_options['output_folder']))
                 print("Output folder cleaned")
                 return True
             except:
                 # TODO: false positive error?
                 print("Error cleaning up output folder:" +
-                      getcwd() + self.app_options["output_folder"])
+                      getcwd() + self.app_options['output_folder'])
         return False
 
 
@@ -214,9 +213,9 @@ class OikazeJinja(object):
         if customFolder:
             orig = customFolder
         else:
-            orig = self.app_options["assets_folder"]
+            orig = self.app_options['assets_folder']
         
-        end = self.app_options["output_folder"] + "/" + orig.split("/")[-1]
+        end = self.app_options['output_folder'] + "/" + orig.split("/")[-1]
         try:
             copytree(orig, end)
         except:

@@ -126,8 +126,13 @@ From here you can now:
 ## Run!
 `python oikaze_jinja.py`
 
+If you want to debug locally you can run a basic HTTP server with:
+`python3 -m http.server --directory output/`
+
+##### TODO: Add commands to the app, like the HTTP server.
+
 If using **tailwind** you can run it manually (for now):
 `NODE_ENV=production npx tailwindcss-cli@latest build ./templates/assets/css/style.css -o ./output/assets/css/style.css`
 
 **NOTE**: You will need to edit the paths with your desires.
-TODO: Run tailwind within Python process.
+##### TODO: Run tailwind within Python process. In the future it will probably run for each module/block?

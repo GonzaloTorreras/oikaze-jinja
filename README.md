@@ -17,6 +17,7 @@ Right now is more like a POC than a real product.
 - [ ] Create a system to work based on modules so you can have Jinja2 custom modules (with tailwind or whatever you want) and call those form the "body" of each post/page.
 - [ ] Add support to easily override templates from custom app folder.
 - [ ] Expand usability on config editor/generator.
+- [ ] Auto generate XML (sitemap and RSS).
 
 ## Random ideas to check viability:
 - [ ] Add support to pure JSON data.
@@ -66,8 +67,8 @@ It supports markdown, and HTML.
 Right now its parsed using <a href="https://github.com/trentm/python-markdown2">markdown2</a> lib
 ```
 
-The app will iterate each file inside `content/` (can be renamed with `config_app['content_folder']`). It will grab the data inside as described, render to jinja with the selected template in the YAML header `template: my-template.html`. It will look up for the template inside the folder `/templates` (once again, it can be customized with `config_app['template_folder']`), if no `template` property is provided will use the fallback to `base.html` (which, can be customized in `config_app['base_template']`).
-##### TODO: config_app['base_template'] is actually not yet implemented.
+The app will iterate each file inside `content/` (can be renamed with `config_app['content_folder']`). It will grab the data inside as described, render to jinja with the selected template in the YAML header `template: my-template.html`. It will look up for the template inside the folder `/templates` (once again, it can be customized with `config_app['template_folder']`), if no `template` property is provided will use the fallback to `blog-post.html` (which, can be customized in `config_app['template_default']`).
+
 Finally will write the output HTML to the `/output` folder (`config_app['output_folder']`) following the next logic:
 First check if `lang` is provided in the YAML header and find the defined slug in `config_site.py`.
 For example given this config:

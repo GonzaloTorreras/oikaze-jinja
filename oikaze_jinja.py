@@ -6,6 +6,7 @@ from shutil import rmtree, copytree
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+import htmlmin # html minifier
 
 import config_app
 import config_site
@@ -183,12 +184,16 @@ class OikazeJinja(object):
             
         try:
             r = render.render(content=data, globals=self.site_options)
+            
+            
         except:
             print("Error rendering")
             print(render)
             return False
+        #minify HTML
+        
+        r = htmlmin.minify(r, remove_empty_space=True)
         return r
-
 
     def clearOutputFolder(self):
         if self.app_options['clean_output']:

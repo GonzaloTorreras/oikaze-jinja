@@ -8,3 +8,5 @@ template: blog-post.html
 # EN - Post
 
 Body
+{% set test ="jinja inside" %}
+{{ test }}

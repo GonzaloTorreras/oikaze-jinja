@@ -1,0 +1,41 @@
+{%- macro html_item(item, depth=1) -%}
+   {%- if item.isPublished || item.url == "javascript:void(0);" -%}
+   <li class="hs-menu-item hs-menu-depth-{{depth}}{{" hs-item-has-children" if item.children }}" role="none">
+       {%- set xAttr = {
+           "role": "menuitem",
+           "href": item.url,
+           "target": item.linkTarget|default("_self"),
+           "tabindex": -1
+       } -%}
+       {% do xAttr.update({"tabindex":0}) if depth == 1 and loop.first %}
+       {%- do xAttr.update({"aria-haspopup": true,"aria-expanded":false}) if item.children -%}
+       {%- if module.show_data_attrs -%}
+           {%- do xAttr.update({"data-page_id": item.page_id}) if item.page_id -%}
+           {%- do xAttr.update({"data-page_link_name":item.pageLinkName}) if item.pageLinkName -%}
+           {%- do xAttr.update({"data-category_Id":item.category_Id}) if item.category_Id -%}
+           {%- do xAttr.update({"data-content_type": item.contentType}) if item.contentType -%}
+       {%- endif -%}
+      <a {{- xAttr|xmlattr -}}>{{- item.linkLabel -}}</a>
+      {%- if item.children -%}
+         {{- menu_wrapper(item.children,item.linkLabel ,depth + 1) -}}
+      {%- endif -%}
+   </li>
+   {%- endif -%}
+{%- endmacro -%}
+{%- macro menu_wrapper(items, label=false, depth = 1) -%}
+    {%- set xAttr = {
+        "role": "menu" if depth > 1 else "menubar",
+        "class": "hs-menu-children-wrapper" if depth > 1 else "simple-menu"
+    } -%}
+    {%- if label -%}
+        {%- do xAttr.update({"aria-label":label}) -%}
+    {%- endif -%}
+    <ul {{- xAttr|xmlattr -}}>
+        {%- for item in items -%}
+        {{- html_item(item, depth) -}}
+        {%- endfor -%}
+    </ul>
+{%- endmacro -%}
+<nav id="{{name}}" class="hs-menu-wrapper active-branch flyouts hs-menu-flow-{{module.orientation}}" role="navigation">
+   {{- menu_wrapper(module.menu_tree, module.menu_name) -}}
+</nav>

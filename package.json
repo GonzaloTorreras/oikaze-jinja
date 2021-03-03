@@ -4,11 +4,13 @@
   "description": "Static Site generator using Jinja2 & TailwindCSS",
   "main": "postcss.config.js",
   "dependencies": {
-    "autoprefixer": "^10.0.4"
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
-    "postcss": "^8.1.14",
-    "postcss-cli": "^8.3.0"
+    "autoprefixer": "^10.2.4",
+    "postcss": "^8.2.6",
+    "postcss-cli": "^8.3.0",
+    "tailwindcss": "^2.0.3"
   },
   "scripts": {
     "build": "postcss templates/assets/css/style.css -o output/assets/css/style.css"

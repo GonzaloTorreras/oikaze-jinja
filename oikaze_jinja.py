@@ -1,3 +1,5 @@
+import socketserver
+import http.server
 from markdown2 import markdown
 from os import listdir, path, getcwd
 from pathlib import Path
@@ -154,8 +156,12 @@ class OikazeJinja(object):
 
         env = Environment(
             loader=PackageLoader('oikaze_jinja', self.app_options['template_folder']),
-            autoescape=select_autoescape(['html', 'xml']),
-            auto_reload=False
+            autoescape=select_autoescape([
+                #'html',
+                'xml'
+            ]),
+            auto_reload=True,
+            cache_size=0 #disable cache so it rebuilts when watching for changes
         )
         env.trim_blocks = True
         env.lstrip_blocks = True
@@ -184,15 +190,17 @@ class OikazeJinja(object):
             
         try:
             r = render.render(content=data, globals=self.site_options)
-            
-            
         except:
             print("Error rendering")
             print(render)
             return False
         #minify HTML
         
-        r = htmlmin.minify(r, remove_empty_space=True)
+        r = htmlmin.minify(r,
+                    remove_empty_space=True
+                    , remove_all_empty_space=True
+                    , remove_comments=True)
+        
         return r
 
     def clearOutputFolder(self):
@@ -250,4 +258,19 @@ class OikazeJinja(object):
 ###############
 
 if __name__ == "__main__":
+    import sys
+    args = [x.replace("--","") for x in sys.argv[1:] ]
+    print(args)
     OikazeJinja()
+
+    if "http" in args:
+
+        PORT = 8000
+        DIRECTORY = "output"
+        class Handler(http.server.SimpleHTTPRequestHandler):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, directory=DIRECTORY, **kwargs)
+
+        with socketserver.TCPServer(("", PORT), Handler) as httpd:
+            print("serving at port", PORT)
+            httpd.serve_forever()

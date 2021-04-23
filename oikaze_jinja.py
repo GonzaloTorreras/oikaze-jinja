@@ -1,5 +1,6 @@
 import socketserver
 import http.server
+from jinja2.runtime import StrictUndefined
 from markdown2 import markdown
 from os import listdir, path, getcwd
 from pathlib import Path
@@ -156,10 +157,11 @@ class OikazeJinja(object):
 
         env = Environment(
             loader=PackageLoader('oikaze_jinja', self.app_options['template_folder']),
-            autoescape=select_autoescape([
-                #'html',
-                'xml'
-            ]),
+            #autoescape=select_autoescape([
+            #    'html',
+            #    'xml'
+            #]),
+            #undefined=StrictUndefined,
             auto_reload=True,
             cache_size=0 #disable cache so it rebuilts when watching for changes
         )
@@ -193,6 +195,8 @@ class OikazeJinja(object):
         except:
             print("Error rendering")
             print(render)
+            import sys
+            print(sys.exc_info())
             return False
         #minify HTML
         

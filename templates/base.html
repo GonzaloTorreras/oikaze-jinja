@@ -83,7 +83,7 @@
     #}
     {%- block head_include -%}
     <link href="/assets/css/style.css" rel="preload" as="style" type="text/css" onload="this.rel='stylesheet'" />
-    {% super() %}
+    {#% super() %#}
     {%- endblock -%}
 
     <!-- TODO: FavIcon -->
@@ -95,7 +95,7 @@
     {%- endif -%}
 
     
-    {{ macros.verbose("extra_head")}}
+    {#{ macros.verbose("extra_head")}#}
     {{ extra_head_data }}
     
     {%- block extra_head -%}

@@ -9,11 +9,11 @@
             {#{ ui.legacy_menu_generator(navigation_links[lang]) }#}
             
             {#% if search_form % TODO: Theme option for search form in Header. #}
-                {{ ui.searchForm() }}
+                {#{ ui.searchForm() }#}
             {#% endif %#}
 
 
-            {{ ui.langSwitcher() }}
+            {#{ ui.langSwitcher() }#}
         </nav>
     </header>
 {% endblock header %}

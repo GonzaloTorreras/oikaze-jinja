@@ -112,7 +112,7 @@ class OikazeJinja(object):
 
 
     def parseFile(self,fileName):
-        with open(path.join(fileName), 'r') as file:
+        with open(path.join(fileName), 'r', encoding="utf-8") as file:
             parsed_md = markdown(file.read(), extras=['metadata'])
         data = parsed_md.metadata
         data['body'] = parsed_md

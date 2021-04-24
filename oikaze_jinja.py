@@ -111,7 +111,7 @@ class OikazeJinja(object):
         return outputFile
 
 
-    def parseFile(self,fileName):
+    def parseFileMD(self,fileName):
         with open(path.join(fileName), 'r', encoding="utf-8") as file:
             parsed_md = markdown(file.read(), extras=['metadata'])
         data = parsed_md.metadata
@@ -123,7 +123,8 @@ class OikazeJinja(object):
 
         return data
 
-
+    def parseFileJSON(self,fileName):
+        pass #TODO: JSON PARSER
     def parseContentFolder(self,allFiles):
         global app_options
 
@@ -131,7 +132,10 @@ class OikazeJinja(object):
 
         for fileName in allFiles:
             counter += 1
-            data = self.parseFile(fileName)
+            if fileName.endswith(".md"):
+                data = self.parseFileMD(fileName)
+            elif fileName.endswith(".json"):
+                data = self.parseFileJSON(fileName) 
             html = self.buildContent(data)
 
             if html:

@@ -7,7 +7,7 @@ from pathlib import Path
 from shutil import rmtree, copytree
 #import configparser # TODO: the whole config parser
 
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, Template
 
 import htmlmin # html minifier
 
@@ -178,11 +178,15 @@ class OikazeJinja(object):
 
 
     def buildContent(self, data):
-
+        """
+        buildContent(data)
+        Will use the template in data.template (or default in app_options) to render with Jinja.
+        """
         if "template" in data:
             template = data['template']
         else:
-            template = "base.html"  # TODO: add app setting to change name of default template name?
+            # TODO: add app setting to change name of default template name?
+            template = self.app_options["template_default"]
 
         try:
             render = self.env.get_template(template)
@@ -198,14 +202,21 @@ class OikazeJinja(object):
             import sys
             print(sys.exc_info())
             return False
-        #minify HTML
-        
-        r = htmlmin.minify(r,
-                    remove_empty_space=True
-                    , remove_all_empty_space=True
-                    , remove_comments=True)
-        
+            r = self.minifyHTML(r)
         return r
+
+    def minifyHTML(self,html):
+        """
+        minifyHTML(html):
+            parses the HTML to minifiy and strip empty spaces
+        """
+        #minify HTML
+        html = htmlmin.minify(html,
+                remove_empty_space=True
+                , remove_all_empty_space=True
+                , remove_comments=True)
+        return html
+
 
     def clearOutputFolder(self):
         if self.app_options['clean_output']:

@@ -12,6 +12,6 @@ app_options = {
     "template_folder": "templates",
     "template_default": "blog-post.html",
     "assets_folder": "templates/assets",
-    "jinja2_conf": {}
+    "jinja2_conf": {} #TODO: jinja2_conf from app_options#
 
 }

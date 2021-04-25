@@ -137,10 +137,11 @@ class OikazeJinja(object):
                 data = self.parseFileMD(fileName)
             elif fileName.endswith(".json"):
                 data = self.parseFileJSON(fileName) 
+            
             html = self.buildContent(data)
 
             if html:
-                #print(data)
+                html = self.minifyHTML(html)
                 outputFile = self.outputF(fileName, data)
 
                 if outputFile:

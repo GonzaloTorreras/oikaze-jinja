@@ -119,11 +119,13 @@ class OikazeJinja(object):
 
         return data
 
+
     def parseFileJSON(self,fileName):
         import json
         with open(fileName, 'r', encoding="utf-8") as file:
             parsed_json = json.load(file)
         return parsed_json
+
 
     def parseContentFolder(self,allFiles):
         global app_options
@@ -210,6 +212,7 @@ class OikazeJinja(object):
             return False
             r = self.minifyHTML(r)
         return r
+
 
     def minifyHTML(self,html):
         """

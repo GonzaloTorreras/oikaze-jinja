@@ -7,9 +7,11 @@ Right now is more like a POC than a real product.
 - [X] Flexible for pages, blog, or any other use case.
 - [X] Support for YAML header for each element/page, (I would like to expand in the future to others too).
 - [X] Beautiful slug generator: blog/my-blog-post.html -> blog/my-blog-post/
-
-## In progress
+- [X] Add support to pure JSON data.
+## In design/POC
 - [ ] Convert to a full class/module to make it more clear and independent of each app/web.
+- [ ] Jinja is not processed if you use within the body/content (out the template).
+- [ ] Nested jinja is not processed.
 ## In the pipe
 - [ ] Help to autogenerate listings (inside app_config, define the YAML prop to check like `{"category":"blog-category.html"}` and, the folder slugs + the template also for general listings (such `/blog`). `{"listings":{"/blog":"blog-listing.html"} }`. Current status: hardcoded.
 - [ ] Improve and automate how tailwindcss is generating the files (current status: manually).
@@ -20,7 +22,6 @@ Right now is more like a POC than a real product.
 - [ ] Auto generate XML (sitemap and RSS).
 
 ## Random ideas to check viability:
-- [ ] Add support to pure JSON data.
 - [ ] Add Hubspot templates converter.
 - [ ] Hubspot CMS to static site deploy?
 
@@ -35,8 +36,8 @@ template: blog-post.html
 
 # This is my post content
 
-It supports markdown, and HTML.
-Right now its parsed using <a href="https://github.com/trentm/python-markdown2">markdown2</a> lib
+It supports markdown `file.md` with HTML on the body or json `file.json`.
+Right now its parsed using <a href="https://github.com/trentm/python-markdown2">markdown2</a> lib and Python json parser.
 ```
 You probably already noticed, but let me explain anyway. This file has two main parts. The first one, defines the metadata. It uses a basic YAML format that will be converted and send it to Jinja parser inside the `content` variable.
 <a id="post-example"></a>
@@ -124,13 +125,14 @@ From here you can now:
 - Customize `config_site.py` with your desirable options.
 - Customize your templates as you like.
 
+# Install
+Clone the repo and install dependencies with `pip install -r requirements.txt `.
 ## Run!
 `python oikaze_jinja.py`
 
 If you want to debug locally you can run a basic HTTP server with:
 `python3 -m http.server --directory output/`
 
-##### TODO: Add commands to the app, like the HTTP server.
 
 If using **tailwind** you can run it manually (for now):
 `NODE_ENV=production npx tailwindcss-cli@latest build ./templates/assets/css/style.css -o ./output/assets/css/style.css`

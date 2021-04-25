@@ -1,0 +1,8 @@
+{
+    "title": "My post title",
+    "description": "Description",
+    "slug": "my-post-json",
+    "lang": "en",
+    "date": "04/10",
+    "body": "# EN - Post\nBody\n{% set test =\"jinja inside\" %}\n{{ test }}"
+}

@@ -112,25 +112,26 @@ class OikazeJinja(object):
 
 
     def parseFileMD(self,fileName):
-        with open(path.join(fileName), 'r', encoding="utf-8") as file:
+        with open(fileName, 'r', encoding="utf-8") as file:
             parsed_md = markdown(file.read(), extras=['metadata'])
         data = parsed_md.metadata
         data['body'] = parsed_md
 
-        # default template to post
-        if not "template" in data:
-            data['template'] = self.app_options['template_default']
-
         return data
 
     def parseFileJSON(self,fileName):
-        pass #TODO: JSON PARSER
+        import json
+        with open(fileName, 'r', encoding="utf-8") as file:
+            parsed_json = json.load(file)
+        return parsed_json
+
     def parseContentFolder(self,allFiles):
         global app_options
 
         counter = 0
 
         for fileName in allFiles:
+            fileName = path.join(fileName)
             counter += 1
             if fileName.endswith(".md"):
                 data = self.parseFileMD(fileName)

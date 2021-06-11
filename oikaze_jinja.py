@@ -41,6 +41,9 @@ class OikazeJinja(object):
 
         # create a list of file and sub directories
         # names in the given directory
+        if not path.isdir(dirName):
+            print("ERROR: content folder doesn't exists:", dirName)
+            exit()
         listOfFile = listdir(dirName)
         allFiles = list()
         # Iterate over all the entries

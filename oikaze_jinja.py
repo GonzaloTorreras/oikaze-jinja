@@ -210,7 +210,7 @@ class OikazeJinja(object):
             import sys
             print(sys.exc_info())
             return False
-            r = self.minifyHTML(r)
+        r = self.minifyHTML(r)
         return r
 
 

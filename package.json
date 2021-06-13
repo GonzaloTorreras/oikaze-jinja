@@ -13,7 +13,7 @@
     "tailwindcss": "^2.0.3"
   },
   "scripts": {
-    "build": "postcss templates/assets/css/style.css -o output/assets/css/style.css"
+    "build": "postcss templates/assets/css/style.css -o output/assets/css/style.min.css"
   },
   "repository": {
     "type": "git",
